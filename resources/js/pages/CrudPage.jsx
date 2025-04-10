@@ -8,9 +8,13 @@ import {
 
 const CrudPage = () => {
     const [data, setData] = useState([]);
-    const [formData, setFormData] = useState({id:'',firstName:"",lastName:"",email:"",phoneNumber:"" });
+    const [formData, setFormData] = useState({_id: '', firstName: "", lastName: "", email: "", phoneNumber: ""});
     const [isEditing, setIsEditing] = useState(false);
     const API = '/api/users';
+
+    useEffect(() => {
+        fetchData();
+    },[])
 
     const fetchData = () => {
         axios.get(API)
@@ -18,7 +22,7 @@ const CrudPage = () => {
             .catch(err => console.error(err));
     };
     const handleChange = (e) => {
-        const { name, value } = e.target;
+        const {name, value} = e.target;
         setFormData(prev => ({
             ...prev,
             [name]: value
@@ -27,7 +31,7 @@ const CrudPage = () => {
 
     const resetForm = () => {
         setFormData({
-            id: '',
+            _id: '',
             firstName: '',
             lastName: '',
             email: '',
@@ -37,10 +41,9 @@ const CrudPage = () => {
     };
 
 
-
     const handleSubmit = () => {
         if (isEditing) {
-            axios.put(`${API}/${formData.id}`, formData)
+            axios.put(`${API}/${formData._id}`, formData)
                 .then(() => {
                     fetchData();
                     resetForm();
@@ -54,43 +57,104 @@ const CrudPage = () => {
         }
     };
 
-
     const handleEdit = (item) => {
         setFormData(item);
         setIsEditing(true);
     };
 
-    const handleDelete = (id) => {
-        axios.delete(`${API}/${id}`)
+    const handleDelete = (_id) => {
+        axios.delete(`${API}/${_id}`)
             .then(fetchData);
     };
 
     const handleImportUsers = () => {
-        const array1 = [
-            { id: 1, firstName: "Alice", lastName: "Smith", email: "alice@example.com", phoneNumber: "123456789" },
-            { id: 2, firstName: "Bob", lastName: "Brown", email: "bob@example.com", phoneNumber: "987654321" }
+        const array1 = [{
+            "_id": "5f0f36345628b2bb08ddcf83",
+            "firstName": "Marina",
+            "lastName": "Orozco",
+            "email": "marina@wiline.com"
+        },
+            {
+                "_id": "5f0f3634a3357afc09a0333d",
+                "firstName": "Kip",
+                "lastName": "Winters",
+                "email": "kip@wiline.com"
+            },
+            {
+                "_id": "5f0f363455f1ad4632d8e4d3",
+                "firstName": "Lorie",
+                "lastName": "Avery",
+                "email": "lorie@wiline.com"
+            },
+            {
+                "_id": "5f0f36343311956754254404",
+                "firstName": "Jasmin",
+                "lastName": "Winters",
+                "email": "jasmin@wiline.com"
+            },
+            {
+                "_id": "5f0f36344285b38ab4e9187f",
+                "firstName": "Emma",
+                "lastName": "Hess",
+                "email": "emma@wiline.com"
+            },
+            {
+                "_id": "5f0f3634abaa863ab18ac741",
+                "firstName": "Elvia",
+                "lastName": "Acosta",
+                "email": "elvia@wiline.com"
+            },
+            {
+                "_id": "5f0f36342c501774010d92fa",
+                "firstName": "Liliana",
+                "lastName": "Sweeney",
+                "email": "liliana@wiline.com"
+            },
+            {
+                "_id": "5f0f3634987f2ae9d3c7c48a",
+                "firstName": "Florencio",
+                "lastName": "Acosta",
+                "email": "florencio@wiline.com"
+            },
+            {
+                "_id": "5f0f3634e8dfd9bbde33c703",
+                "firstName": "Delores",
+                "lastName": "Sanchez",
+                "email": "delores@wiline.com"
+            }
         ];
 
         const array2 = [
-            { id: 3, firstName: "Carol", lastName: "Johnson", email: "carol@example.com", phoneNumber: "111222333" }
-        ];
+            {
+                email: "liliana@wiline.com",
+                phoneNumber: "051656592"
+            },
+            {
+                "email": "florencio@wiline.com",
+                "phoneNumber": "051329392"
+            },
+            {
+                "email": "delores@wiline.com",
+                "phoneNumber": "051334392"
+            }
+        ]
 
-        const usersToImport = [...array1, ...array2];
 
-        axios.post('/api/users/import', { users: usersToImport })
+
+        axios.post('/api/users/import', {user : array1, phoneNumber: array2})
             .then(() => fetchData())
             .catch(err => console.error(err));
     };
     return (
-        <Container sx={{ py: 4 }}>
+        <Container sx={{py: 4}}>
             <Typography variant="h4" gutterBottom>CRUD - Contacts</Typography>
 
-            <Paper sx={{ p: 3, mb: 4 }}>
+            <Paper sx={{p: 3, mb: 4}}>
                 <Stack spacing={2}>
                     <TextField
                         label="ID"
                         name="id"
-                        value={formData.id}
+                        value={formData._id}
                         onChange={handleChange}
                         fullWidth
                     />
@@ -147,15 +211,15 @@ const CrudPage = () => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {data.map(user => (
-                            <TableRow key={user.id}>
+                            {data.map(user => (
+                            <TableRow key={user._id}>
                                 <TableCell>{user.firstName}</TableCell>
                                 <TableCell>{user.lastName}</TableCell>
                                 <TableCell>{user.email}</TableCell>
                                 <TableCell>{user.phoneNumber}</TableCell>
                                 <TableCell>
                                     <Button onClick={() => handleEdit(user)}>Edit</Button>
-                                    <Button color="error" onClick={() => handleDelete(user.id)}>Delete</Button>
+                                    <Button color="error" onClick={() => handleDelete(user._id)}>Delete</Button>
                                 </TableCell>
                             </TableRow>
                         ))}

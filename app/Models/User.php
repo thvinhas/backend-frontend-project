@@ -19,10 +19,11 @@ class User extends Model
      * @var list<string>
      */
     protected $fillable = [
-        'id', 'firstName', 'lastName', 'email', 'phoneNumber'
+        '_id', 'firstName', 'lastName', 'email', 'phoneNumber'
     ];
 
-    public $incrementing = false; // Para que o Laravel aceite id manual
-    protected $keyType = 'string'; // Porque o id agora é string
+    public $incrementing = false;
+    protected $keyType = 'string';
+    protected $primaryKey = '_id';
 
 }
