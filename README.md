@@ -207,6 +207,6 @@ You should see the full CRUD interface with Material UI.
 
 ## 📬 Contact
 
-Created by [Your Name].
+Created by Thiago Vinhas.
 For questions or contributions, feel free to open an issue or pull request.
 
