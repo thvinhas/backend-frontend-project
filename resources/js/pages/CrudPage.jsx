@@ -18,7 +18,7 @@ const CrudPage = () => {
 
     const fetchData = () => {
         axios.get(API)
-            .then(res => setData(res.data))
+            .then(res => setData(res.data.data))
             .catch(err => console.error(err));
     };
     const handleChange = (e) => {
@@ -40,7 +40,6 @@ const CrudPage = () => {
         setIsEditing(false);
     };
 
-
     const handleSubmit = () => {
         if (isEditing) {
             axios.put(`${API}/${formData._id}`, formData)
@@ -58,6 +57,7 @@ const CrudPage = () => {
     };
 
     const handleEdit = (item) => {
+        console.log(item);
         setFormData(item);
         setIsEditing(true);
     };
@@ -141,7 +141,7 @@ const CrudPage = () => {
 
 
 
-        axios.post('/api/users/import', {user : array1, phoneNumber: array2})
+        axios.post('/api/users/importMultipleUsers', {user : array1, phoneNumber: array2})
             .then(() => fetchData())
             .catch(err => console.error(err));
     };
@@ -153,7 +153,7 @@ const CrudPage = () => {
                 <Stack spacing={2}>
                     <TextField
                         label="ID"
-                        name="id"
+                        name="_id"
                         value={formData._id}
                         onChange={handleChange}
                         fullWidth
@@ -211,15 +211,15 @@ const CrudPage = () => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                            {data.map(user => (
-                            <TableRow key={user._id}>
-                                <TableCell>{user.firstName}</TableCell>
-                                <TableCell>{user.lastName}</TableCell>
-                                <TableCell>{user.email}</TableCell>
-                                <TableCell>{user.phoneNumber}</TableCell>
+                            {data.map(userList => (
+                            <TableRow key={userList._id}>
+                                <TableCell>{userList.firstName}</TableCell>
+                                <TableCell>{userList.lastName}</TableCell>
+                                <TableCell>{userList.email}</TableCell>
+                                <TableCell>{userList.phoneNumber}</TableCell>
                                 <TableCell>
-                                    <Button onClick={() => handleEdit(user)}>Edit</Button>
-                                    <Button color="error" onClick={() => handleDelete(user._id)}>Delete</Button>
+                                    <Button onClick={() => handleEdit(userList)}>Edit</Button>
+                                    <Button color="error" onClick={() => handleDelete(userList._id)}>Delete</Button>
                                 </TableCell>
                             </TableRow>
                         ))}

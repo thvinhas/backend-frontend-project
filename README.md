@@ -133,7 +133,7 @@ Endpoint to import users by merging two arrays:
 The backend will **merge the arrays by matching emails**, attach the phone numbers when available, and insert the final list into the database.
 
 ```bash
-POST /api/users/import
+POST /api/users/importMultipleUsers
 Content-Type: application/json
 
 {
@@ -169,6 +169,14 @@ Content-Type: application/json
 - Backend handles the merging and validation
 
 ---
+# 🧪 Running Tests in Laravel Project
+Once your environment is ready, you can run the tests using the following commands:
+
+```bash
+php artisan test
+```
+
+
 
 ## ⚠️ Notes
 
